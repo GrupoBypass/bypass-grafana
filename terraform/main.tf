@@ -62,14 +62,13 @@ resource "aws_security_group" "grafana_sg" {
 # EC2 (onde o Grafana rodará via Docker)
 # ============================
 resource "aws_instance" "grafana" {
-  ami                    = var.ami_id
-  instance_type          = var.instance_type
-  key_name               = var.key_name
-  vpc_security_group_ids = [aws_security_group.grafana_sg.id]
+  ami                    = "ami-0341d95f75f311023"
+  instance_type          = "t2.medium"
+  key_name               = "bypass-key"
+  vpc_security_group_ids = [data.terraform_remote_state.bypass_transformer.outputs.ssh_sg_id]
 
   tags = {
-    Name    = "${var.project_name}-ec2"
-    Project = var.project_name
+    Name = "bypass-grafana-ec2"
   }
 }
 
