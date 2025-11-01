@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "bypass-terraform-state"   # mesmo bucket do projeto principal
+    bucket         = "bypass-terraform-backup"   # mesmo bucket do projeto principal
     key            = "grafana/terraform.tfstate" # state isolado
     region         = "us-east-1"
     dynamodb_table = "bypass-terraform-lock"
