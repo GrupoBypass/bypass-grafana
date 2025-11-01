@@ -88,9 +88,9 @@ resource "aws_iam_policy" "grafana_policy" {
         Effect = "Allow"
         Action = ["s3:GetObject", "s3:ListBucket"]
         Resource = [
-          data.terraform_remote_state.bypass_transformer.outputs.raw_bucket_name_arn,
-          data.terraform_remote_state.bypass_transformer.outputs.trusted_bucket_name_arn,
-          data.terraform_remote_state.bypass_transformer.outputs.client_bucket_name_arn
+          data.terraform_remote_state.bypass_transformer.outputs.raw_bucket_arn,
+          data.terraform_remote_state.bypass_transformer.outputs.trusted_bucket_arn,
+          data.terraform_remote_state.bypass_transformer.outputs.client_bucket_arn
         ]
       },
       {
