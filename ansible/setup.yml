@@ -1,0 +1,71 @@
+---
+- hosts: grafana
+  become: yes
+
+  tasks:
+    - name: Atualizar pacotes do sistema
+      yum:
+        name: "*"
+        state: latest
+
+    - name: Instalar pacotes básicos
+      yum:
+        name:
+          - docker
+          - python3-pip
+        state: present
+
+    - name: Instalar módulo Docker do Python
+      pip:
+        name: docker
+        executable: pip3
+        extra_args: "--ignore-installed"
+
+    - name: Habilitar e iniciar serviço Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Criar diretório do Grafana
+      file:
+        path: /opt/grafana
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Copiar código do Grafana
+      copy:
+        src: "{{ playbook_dir }}/../grafana/"
+        dest: /opt/grafana/
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Copiar arquivo .env
+      copy:
+        src: "{{ playbook_dir }}/.env"
+        dest: /opt/grafana/.env
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Build da imagem Docker Grafana
+      community.docker.docker_image:
+        name: grafana-bypass
+        build:
+          path: /opt/grafana
+        source: build
+        force_source: true
+
+    - name: Rodar o container Grafana
+      community.docker.docker_container:
+        name: grafana-bypass-container
+        image: grafana-bypass
+        state: started
+        recreate: true
+        ports:
+          - "3000:3000"
+        env_file: /opt/grafana/.env
+        restart_policy: always
