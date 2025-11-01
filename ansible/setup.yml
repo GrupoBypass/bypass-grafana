@@ -12,7 +12,7 @@
       yum:
         name:
           - docker
-          - docker-compose
+          - docker-compose-plugin
           - python3-pip
         state: present
 
