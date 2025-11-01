@@ -56,12 +56,12 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY_ID=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}" >> .env
 
-      - name: Instalar dependências
+      - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y python3 python3-pip sshpass
-          pip3 install ansible docker docker-compose
-
+          pip3 install ansible
+          
       - name: Configurar EC2 com Ansible
         run: |
           cd ansible
