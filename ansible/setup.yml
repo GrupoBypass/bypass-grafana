@@ -51,7 +51,7 @@
         group: root
         mode: 0644
 
- - name: Subir Grafana via Docker Compose
+    - name: Subir Grafana via Docker Compose
       community.docker.docker_compose:
         project_src: /opt/grafana
         state: present
