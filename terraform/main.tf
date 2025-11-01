@@ -59,66 +59,6 @@ resource "aws_security_group" "grafana_sg" {
 }
 
 # ============================
-# IAM Role e Policy (read-only em Athena/S3)
-# ============================
-resource "aws_iam_role" "grafana_role" {
-  name = "${var.project_name}-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Principal = {
-        Service = "ec2.amazonaws.com"
-      }
-      Action = "sts:AssumeRole"
-    }]
-  })
-}
-
-resource "aws_iam_policy" "grafana_policy" {
-  name        = "${var.project_name}-policy"
-  description = "Permite leitura no Athena e S3"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "S3Read"
-        Effect = "Allow"
-        Action = ["s3:GetObject", "s3:ListBucket"]
-        Resource = [
-          data.terraform_remote_state.bypass_transformer.outputs.raw_bucket_arn,
-          data.terraform_remote_state.bypass_transformer.outputs.trusted_bucket_arn,
-          data.terraform_remote_state.bypass_transformer.outputs.client_bucket_arn
-        ]
-      },
-      {
-        Sid    = "AthenaRead"
-        Effect = "Allow"
-        Action = [
-          "athena:StartQueryExecution",
-          "athena:GetQueryExecution",
-          "athena:GetQueryResults",
-          "athena:ListWorkGroups"
-        ]
-        Resource = "*"
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "attach_policy" {
-  role       = aws_iam_role.grafana_role.name
-  policy_arn = aws_iam_policy.grafana_policy.arn
-}
-
-resource "aws_iam_instance_profile" "grafana_instance_profile" {
-  name = "${var.project_name}-instance-profile"
-  role = aws_iam_role.grafana_role.name
-}
-
-# ============================
 # EC2 (onde o Grafana rodará via Docker)
 # ============================
 resource "aws_instance" "grafana" {
@@ -126,7 +66,6 @@ resource "aws_instance" "grafana" {
   instance_type          = var.instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.grafana_sg.id]
-  iam_instance_profile   = aws_iam_instance_profile.grafana_instance_profile.name
 
   tags = {
     Name    = "${var.project_name}-ec2"
