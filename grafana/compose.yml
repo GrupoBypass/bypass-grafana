@@ -1,0 +1,14 @@
+services:
+  grafana:
+    image: grafana/grafana-oss
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ~/grafana-aws/credentials:/root/.aws/credentials:ro
+
+volumes:
+  grafana-storage:
