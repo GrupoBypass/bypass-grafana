@@ -7,7 +7,6 @@ terraform {
     bucket         = "bypass-terraform-backup"   # mesmo bucket do projeto principal
     key            = "grafana/terraform.tfstate" # state isolado
     region         = "us-east-1"
-    dynamodb_table = "bypass-terraform-lock"
   }
 }
 
