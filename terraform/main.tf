@@ -66,7 +66,6 @@ resource "aws_instance" "grafana" {
   instance_type          = "t2.medium"
   key_name               = "bypass-key"
   vpc_security_group_ids      = [data.terraform_remote_state.bypass_transformer.outputs.ssh_sg_id]
-  subnet_id                   = data.terraform_remote_state.bypass_transformer.outputs.default_subnet_id
   associate_public_ip_address = true
 
   tags = {
