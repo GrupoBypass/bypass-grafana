@@ -51,21 +51,8 @@
         group: root
         mode: 0644
 
-    - name: Build da imagem Docker Grafana
-      community.docker.docker_image:
-        name: grafana-bypass
-        build:
-          path: /opt/grafana
-        source: build
-        force_source: true
-
-    - name: Rodar o container Grafana
-      community.docker.docker_container:
-        name: grafana-bypass-container
-        image: grafana-bypass
-        state: started
-        recreate: true
-        ports:
-          - "3000:3000"
-        env_file: /opt/grafana/.env
-        restart_policy: always
+ - name: Subir Grafana via Docker Compose
+      community.docker.docker_compose:
+        project_src: /opt/grafana
+        state: present
+        restarted: true
