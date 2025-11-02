@@ -6,8 +6,6 @@ services:
       - "3000:3000"
     env_file:
       - .env
-    environment:
-      - GF_INSTALL_PLUGINS=boazreicher-mosaicplot-panel@1.0.18
     volumes:
       - grafana-storage:/var/lib/grafana
       - ~/grafana-aws/credentials:/root/.aws/credentials:ro
