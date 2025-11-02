@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -55,7 +55,7 @@
         "content": "<img src=\"https://by-trustesd.s3.us-east-1.amazonaws.com/Teste%20Metro%20%281%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIA33BUHYS2YHAIFBBA%2F20250911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250911T214006Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJGMEQCIHaU6Gca57tg1awnWvibcmYehQacRRr95eRa1dlLGd6WAiBCSKNzbPv3PIPDbYzmZxopI2dM3iyfTanewOlYMForjyqDAwgfEAEaDDgxNDAwNTg2MzYwNSIM5mt14ON9q84i%2F23xKuACpYYVu6pSsvHpJQiOLNMYRTRhIULyON3LXHPccaMmlTsUyP%2FirW9cF2WoGGjsE%2BwC%2FQZPsT9E12mzt1byBqZfwAqdOixyI5tnT0eHMW1K1p15Sw6T3sf%2B3rnNftHkU3s1vL%2FzPrSnvIllVVzGbEfvEUE0BX0jKLRxJLMlsZqDBznyZJl1xTBVTIvm8FE3lIYrSwvwvLmP9lPfolDOCTZP4p0weP1PwHI1hsSo32F4BvcZG%2BZdstYv3mHKFQLOr2ebwWuWx3brA%2Fm96QzIN%2BiK0QG2Z7ebLRa7R579o7sXoKnnu8g52YC%2F1Hkiy3oKR26NmxN%2Bt4aLnzkrHh5zrEK5IUk2aCDTkfXLaxFvF4tsOFdYQVAKV9KO6THvRBI4pVSy4WlT9v8uf2khFAGzRdOrzTpI9Y83AFqYx5T7TKzmzLoY5LUkrtFIvZkg7%2B4vlUXK7%2BiunGlt1wvZrjUYDgC67DD6%2FYzGBjqIArwI0ILNiZCrIVtzGFCaqJd3QQn6eF8V184k3zPSC%2F7UJfVWJuAAj8XdpuytD1BVI9c71mPezI8A8M3xhYIGk74i693tYUDR4j025lGDygROv%2B3DHdAp4IdQAg18EtC8RYA8nW%2BzvcgeJA%2Bj%2FRaAYZswSoHPzoBM2Q6kPSk6MPE71R9ETX6Lss%2Bv%2BdIOACRf1c9cHkm0B8PNBaZegFbVvsvGiYKMMMaZpgcNcO%2BQhuUsMuyc5zZ7bVbqFx0xPsnGlkYH%2Fsn7%2FOIavaNfgFu8XNrjwPT2pWc6%2FRf%2FUo7YdQZnvKkd5T9l%2BGEuo6Xj9EGYhk7gkCD6O7awB01KUBKT%2B1R48Mt1wCKf6Q%3D%3D&X-Amz-Signature=43d536fc05c41dbfed4da68f33e822b8f3b164af1b6f7fefa080020e0764f719&X-Amz-SignedHeaders=host&response-content-disposition=inline\">",
         "mode": "html"
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "title": "",
       "type": "text"
     },
@@ -130,7 +130,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "connectionArgs": {
@@ -151,7 +151,7 @@
     {
       "datasource": {
         "type": "grafana-athena-datasource",
-        "uid": "cex3oj3n44ttsd"
+        "uid": "af2x5ksu9we0wb"
       },
       "fieldConfig": {
         "defaults": {},
@@ -217,7 +217,7 @@
             "uid": "cew0r808i79xcb"
           },
           "format": 1,
-          "rawSQL": "SELECT\r\n  CAST(x AS INT) AS x,\r\n  CAST(y AS INT) AS y,\r\n  CAST(valorMatriz AS DOUBLE) AS valorMatriz,\r\n  current_timestamp AS __time\r\nFROM minha_tabela_csv\r\nwhere plataforma = ${plataforma}\r\nORDER BY x, y\r\n",
+          "rawSQL": "SELECT\r\n  CAST(x AS INT) AS x,\r\n  CAST(y AS INT) AS y,\r\n  CAST(valorMatriz AS DOUBLE) AS valorMatriz,\r\n  current_timestamp AS __time\r\nFROM bypass_table_omron \r\nwhere plataforma = '${plataforma}'\r\nORDER BY x, y\r\n",
           "refId": "A"
         }
       ],
@@ -288,7 +288,7 @@
         "sizing": "auto",
         "valueMode": "color"
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "connectionArgs": {
@@ -358,7 +358,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "connectionArgs": {
@@ -428,7 +428,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "connectionArgs": {
@@ -499,7 +499,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "connectionArgs": {
@@ -557,7 +557,7 @@
           "transitionDuration": 800
         }
       },
-      "pluginVersion": "1.2.11",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "connectionArgs": {
@@ -1325,7 +1325,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
@@ -1431,5 +1431,5 @@
   "timezone": "",
   "title": "2 - Dash Operações",
   "uid": "4a3a148f-ec34-4ba3-a540-7cd43842665e",
-  "version": 33
+  "version": 1
 }
