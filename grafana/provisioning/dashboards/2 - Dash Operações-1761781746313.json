@@ -557,7 +557,7 @@
           "transitionDuration": 800
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "1.2.11",
       "targets": [
         {
           "connectionArgs": {
@@ -654,7 +654,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "min"
+              "options": "maximo_aceitavel"
             },
             "properties": [
               {
@@ -669,7 +669,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Mínimo Aceitável"
+              "options": "minimo_aceitavel"
             },
             "properties": [
               {
@@ -684,7 +684,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Temperatura Atual"
+              "options": "temperatura_atual"
             },
             "properties": [
               {
@@ -732,7 +732,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "SELECT \r\n  from_iso8601_timestamp(replace(dataHora, ' ', 'T')) AS time,\r\n  temperatura as \"Temperatura Atual\",\r\n  min as \"Mínimo Aceitável\",\r\n  max as \"Máximo Aceitável\"\r\nFROM sensores_ambiente\r\nWHERE dataHora BETWEEN '2025-06-13 11:30:00' AND '2025-06-13 14:30:00'\r\nORDER BY dataHora;\r\n",
+          "rawSQL": "SELECT \r\n  from_iso8601_timestamp(replace(data_hora, ' ', 'T')) AS __time,\r\n  CAST(temperature_c AS DOUBLE) AS temperatura_atual,\r\n  CAST(min AS DOUBLE) AS minimo_aceitavel,\r\n  CAST(max AS DOUBLE) AS maximo_aceitavel\r\nFROM bypass_table_dht11;\r\n",
           "refId": "A"
         }
       ],
@@ -988,7 +988,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "SELECT \r\n  from_iso8601_timestamp(replace(dataHora, ' ', 'T')) AS time,\r\n  temperatura as \"Temperatura Atual\",\r\n  min as \"Mínimo Aceitável\",\r\n  max as \"Máximo Aceitável\"\r\nFROM sensores_ambiente\r\nWHERE from_iso8601_timestamp(replace(dataHora, ' ', 'T'))\r\n      BETWEEN TIMESTAMP '2025-06-13 11:00:00' AND TIMESTAMP '2025-06-13 16:30:00'\r\nORDER BY dataHora;\r\n",
+          "rawSQL": "SELECT \r\n  from_iso8601_timestamp(replace(data_hora, ' ', 'T')) AS __time,\r\n  CAST(temperature_c AS DOUBLE) AS temperatura_atual,\r\n  CAST(min AS DOUBLE) AS minimo_aceitavel,\r\n  CAST(max AS DOUBLE) AS maximo_aceitavel\r\nFROM bypass_table_dht11;\r\n",
           "refId": "A"
         },
         {
@@ -1005,7 +1005,7 @@
           },
           "format": 1,
           "hide": false,
-          "rawSQL": "SELECT\r\n  from_iso8601_timestamp(replace(dataHora, ' ', 'T')) AS time,\r\n  ocupacao_porcentagem AS \"% de ocupação\"\r\nFROM sensores_ambiente\r\nWHERE from_iso8601_timestamp(replace(dataHora, ' ', 'T'))\r\n      BETWEEN TIMESTAMP '2025-06-13 11:00:00' AND TIMESTAMP '2025-06-13 16:30:00'\r\nORDER BY dataHora;\r\n",
+          "rawSQL": "SELECT\r\n  from_iso8601_timestamp(replace(datahora, ' ', 'T')) AS time,\r\n  ocupacao_media AS \"% de ocupação\"\r\nFROM bypass_table_ocupacao\r\nORDER BY datahora;\r\n",
           "refId": "B"
         }
       ],
@@ -1431,5 +1431,5 @@
   "timezone": "",
   "title": "2 - Dash Operações",
   "uid": "4a3a148f-ec34-4ba3-a540-7cd43842665e",
-  "version": 2
+  "version": 3
 }
