@@ -74,8 +74,6 @@
     - name: Subir Grafana via Docker Compose
       community.docker.docker_compose_v2:
         project_src: /opt/grafana
-        env_files:
-          - /opt/grafana/.env
         state: present
         recreate: always
         remove_orphans: true
