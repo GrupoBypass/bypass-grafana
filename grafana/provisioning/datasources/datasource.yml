@@ -9,7 +9,7 @@ datasources:
     jsonData:
       defaultRegion: us-east-1             # ajuste para sua região AWS
       catalog: AwsDataCatalog
-      database: my_database_name           # substitua pelo nome do seu banco Athena
+      database: default
       workgroup: primary                   # ou outro workgroup
       authType: keys
     secureJsonData:
