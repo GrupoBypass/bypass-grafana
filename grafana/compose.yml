@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     environment:
-      - GF_INSTALL_PLUGINS=boazreicher-mosaicplot-panel
+      - GF_INSTALL_PLUGINS=boazreicher-mosaicplot-panel, magnesium-wordcloud-panel
     volumes:
       - grafana-storage:/var/lib/grafana
       - ~/grafana-aws/credentials:/root/.aws/credentials:ro
