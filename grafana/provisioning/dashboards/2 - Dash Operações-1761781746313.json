@@ -1,0 +1,1435 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 22,
+      "panels": [],
+      "title": "Mapa da Estação",
+      "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 16,
+        "x": 0,
+        "y": 1
+      },
+      "id": 12,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<img src=\"https://by-trustesd.s3.us-east-1.amazonaws.com/Teste%20Metro%20%281%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIA33BUHYS2YHAIFBBA%2F20250911%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250911T214006Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEKb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJGMEQCIHaU6Gca57tg1awnWvibcmYehQacRRr95eRa1dlLGd6WAiBCSKNzbPv3PIPDbYzmZxopI2dM3iyfTanewOlYMForjyqDAwgfEAEaDDgxNDAwNTg2MzYwNSIM5mt14ON9q84i%2F23xKuACpYYVu6pSsvHpJQiOLNMYRTRhIULyON3LXHPccaMmlTsUyP%2FirW9cF2WoGGjsE%2BwC%2FQZPsT9E12mzt1byBqZfwAqdOixyI5tnT0eHMW1K1p15Sw6T3sf%2B3rnNftHkU3s1vL%2FzPrSnvIllVVzGbEfvEUE0BX0jKLRxJLMlsZqDBznyZJl1xTBVTIvm8FE3lIYrSwvwvLmP9lPfolDOCTZP4p0weP1PwHI1hsSo32F4BvcZG%2BZdstYv3mHKFQLOr2ebwWuWx3brA%2Fm96QzIN%2BiK0QG2Z7ebLRa7R579o7sXoKnnu8g52YC%2F1Hkiy3oKR26NmxN%2Bt4aLnzkrHh5zrEK5IUk2aCDTkfXLaxFvF4tsOFdYQVAKV9KO6THvRBI4pVSy4WlT9v8uf2khFAGzRdOrzTpI9Y83AFqYx5T7TKzmzLoY5LUkrtFIvZkg7%2B4vlUXK7%2BiunGlt1wvZrjUYDgC67DD6%2FYzGBjqIArwI0ILNiZCrIVtzGFCaqJd3QQn6eF8V184k3zPSC%2F7UJfVWJuAAj8XdpuytD1BVI9c71mPezI8A8M3xhYIGk74i693tYUDR4j025lGDygROv%2B3DHdAp4IdQAg18EtC8RYA8nW%2BzvcgeJA%2Bj%2FRaAYZswSoHPzoBM2Q6kPSk6MPE71R9ETX6Lss%2Bv%2BdIOACRf1c9cHkm0B8PNBaZegFbVvsvGiYKMMMaZpgcNcO%2BQhuUsMuyc5zZ7bVbqFx0xPsnGlkYH%2Fsn7%2FOIavaNfgFu8XNrjwPT2pWc6%2FRf%2FUo7YdQZnvKkd5T9l%2BGEuo6Xj9EGYhk7gkCD6O7awB01KUBKT%2B1R48Mt1wCKf6Q%3D%3D&X-Amz-Signature=43d536fc05c41dbfed4da68f33e822b8f3b164af1b6f7fefa080020e0764f719&X-Amz-SignedHeaders=host&response-content-disposition=inline\">",
+        "mode": "html"
+      },
+      "pluginVersion": "12.1.1",
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "uid": "grafana-athena-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Pontual"
+                },
+                "1": {
+                  "color": "yellow",
+                  "index": 1,
+                  "text": "Levemente Atrasado"
+                },
+                "2": {
+                  "color": "red",
+                  "index": 2,
+                  "text": "Muito Atrasado"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 1
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "WITH base AS (\r\n    SELECT \r\n        AVG(headway_segundos) AS media_intervalo\r\n    FROM table_piezo\r\n    WHERE hour(date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s')) BETWEEN 12 AND 17\r\n)\r\nSELECT \r\n    CASE\r\n        WHEN ABS(media_intervalo) <= 180 THEN 0\r\n        WHEN ABS(media_intervalo) <= 360 THEN 1\r\n        ELSE 2\r\n    END AS classificacao_intervalo_num\r\nFROM base;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Status Trens",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-athena-datasource",
+        "uid": "cex3oj3n44ttsd"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 14,
+        "x": 0,
+        "y": 6
+      },
+      "id": 1,
+      "options": {
+        "amplitudeField": "valorMatriz",
+        "bevel": false,
+        "binType": "sum",
+        "cellShape": "rect",
+        "compact": true,
+        "dataFormat": "singleFrame",
+        "discreteScale": false,
+        "enableFocus": false,
+        "groupField": "y",
+        "invertColors": false,
+        "invertPalette": true,
+        "isDark": true,
+        "labelPositionType": "horizontal",
+        "labelType": "series",
+        "leftMargin": 50,
+        "maxColumns": 283,
+        "maxRows": 1000,
+        "maxType": "explicit",
+        "minColumns": 186,
+        "numColumns": 186,
+        "outlineColor": "#000000",
+        "outlineColorType": "same",
+        "outlineWidth": 1.3,
+        "palette": "interpolateRdYlGn",
+        "rowField": "x",
+        "scaleType": "log",
+        "scaleWidth": 86,
+        "seed": 0,
+        "showScale": true,
+        "showXAxis": false,
+        "smooth": false,
+        "sortMode": "asc",
+        "sortType": "lex",
+        "spacing": 0,
+        "zeroColor": "#000000",
+        "zeroType": "regular"
+      },
+      "pluginVersion": "1.0.18",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cew0r808i79xcb"
+          },
+          "format": 1,
+          "rawSQL": "SELECT\r\n  CAST(x AS INT) AS x,\r\n  CAST(y AS INT) AS y,\r\n  CAST(valorMatriz AS DOUBLE) AS valorMatriz,\r\n  current_timestamp AS __time\r\nFROM minha_tabela_csv\r\nwhere plataforma = ${plataforma}\r\nORDER BY x, y\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "type": "boazreicher-mosaicplot-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-athena-datasource",
+        "uid": "cex3oj3n44ttsd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 98,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 30
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 2,
+        "x": 14,
+        "y": 6
+      },
+      "id": 13,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "SELECT 100 as value\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "uid": "grafana-athena-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "velocitykmh"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 6
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "SELECT \r\n    ROUND(AVG(velocidade_kmh), 2) AS media_velocidade_kmh\r\nFROM table_piezo\r\nWHERE hour(date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s')) BETWEEN 12 AND 17;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Velocidade Média",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "uid": "grafana-athena-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "m"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "SELECT \r\n    ROUND(AVG(headway_segundos)/60, 0) AS media_atraso_segundos\r\nFROM table_piezo\r\nWHERE hour(date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s')) BETWEEN 12 AND 17;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Media de Intervalo",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-athena-datasource",
+        "uid": "cex3oj3n44ttsd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 14,
+        "x": 0,
+        "y": 16
+      },
+      "id": 2,
+      "options": {
+        "minVizHeight": 82,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Valor$/",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cew0r808i79xcb"
+          },
+          "format": 1,
+          "rawSQL": "SELECT \r\n  idcarro AS Carro,\r\n  valorcarro AS Valor\r\nFROM table_carros;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Qtd de pessoas por carro",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "uid": "grafana-athena-datasource"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 10,
+        "x": 14,
+        "y": 16
+      },
+      "id": 14,
+      "options": {
+        "series_index": 0,
+        "wordCloudOptions": {
+          "deterministic": false,
+          "enableTooltip": true,
+          "fontFamily": "arial",
+          "fontSizes": [
+            15,
+            80
+          ],
+          "padding": 1,
+          "rotationAngles": [
+            0,
+            0
+          ],
+          "rotations": 2,
+          "scale": "sqrt",
+          "spiral": "archimedean",
+          "transitionDuration": 800
+        }
+      },
+      "pluginVersion": "1.2.11",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "SELECT * from table_wordcloud",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "type": "magnesium-wordcloud-panel"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 19,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "Temperatura ( °C )",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 20
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "min"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "light-blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Mínimo Aceitável"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "light-blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Temperatura Atual"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 0,
+            "y": 42
+          },
+          "id": 3,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "timezone": [
+              "utc"
+            ],
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.1.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT \r\n  from_iso8601_timestamp(replace(dataHora, ' ', 'T')) AS time,\r\n  temperatura as \"Temperatura Atual\",\r\n  min as \"Mínimo Aceitável\",\r\n  max as \"Máximo Aceitável\"\r\nFROM sensores_ambiente\r\nWHERE dataHora BETWEEN '2025-06-13 11:30:00' AND '2025-06-13 14:30:00'\r\nORDER BY dataHora;\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "Temperatura do Carro / Últimas 3 Horas",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "ocupacao"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "% de ocupação"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "semi-dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 8,
+            "y": 42
+          },
+          "id": 4,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 100
+          },
+          "pluginVersion": "12.1.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT\r\n  from_iso8601_timestamp(replace(dataHora, ' ', 'T')) AS time,\r\n  ocupacao_porcentagem AS \"% de ocupação\"\r\nFROM sensores_ambiente\r\nWHERE from_iso8601_timestamp(replace(dataHora, ' ', 'T'))\r\n      BETWEEN TIMESTAMP '2025-06-13 11:30:00' AND TIMESTAMP '2025-06-13 14:30:00'\r\nORDER BY dataHora;\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "% de Pessoas / Últimas 3 Horas",
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "A Mínimo Aceitável"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "light-blue",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "A Temperatura Atual"
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "dark-red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 8,
+            "x": 16,
+            "y": 42
+          },
+          "id": 5,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.1.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT \r\n  from_iso8601_timestamp(replace(dataHora, ' ', 'T')) AS time,\r\n  temperatura as \"Temperatura Atual\",\r\n  min as \"Mínimo Aceitável\",\r\n  max as \"Máximo Aceitável\"\r\nFROM sensores_ambiente\r\nWHERE from_iso8601_timestamp(replace(dataHora, ' ', 'T'))\r\n      BETWEEN TIMESTAMP '2025-06-13 11:00:00' AND TIMESTAMP '2025-06-13 16:30:00'\r\nORDER BY dataHora;\r\n",
+              "refId": "A"
+            },
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "datasource": {
+                "type": "grafana-athena-datasource",
+                "uid": "bew7ncyjg4etcc"
+              },
+              "format": 1,
+              "hide": false,
+              "rawSQL": "SELECT\r\n  from_iso8601_timestamp(replace(dataHora, ' ', 'T')) AS time,\r\n  ocupacao_porcentagem AS \"% de ocupação\"\r\nFROM sensores_ambiente\r\nWHERE from_iso8601_timestamp(replace(dataHora, ' ', 'T'))\r\n      BETWEEN TIMESTAMP '2025-06-13 11:00:00' AND TIMESTAMP '2025-06-13 16:30:00'\r\nORDER BY dataHora;\r\n",
+              "refId": "B"
+            }
+          ],
+          "title": "Historico do Dia (Temperatura x % de Pessoas)",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Temperatura e Umidade",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "id": 21,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "mappings": [],
+              "max": 103,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 70
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 11,
+            "x": 0,
+            "y": 51
+          },
+          "id": 15,
+          "options": {
+            "displayMode": "gradient",
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "maxVizHeight": 300,
+            "minVizHeight": 16,
+            "minVizWidth": 20,
+            "namePlacement": "auto",
+            "orientation": "vertical",
+            "reduceOptions": {
+              "calcs": [],
+              "fields": "",
+              "values": true
+            },
+            "showUnfilled": true,
+            "sizing": "auto",
+            "text": {
+              "percentSize": 1
+            },
+            "valueMode": "color"
+          },
+          "pluginVersion": "12.1.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT\r\n    CONCAT('Trem ', trem, ' - Carro ', carro) AS label,\r\n    ROUND(\r\n        CASE \r\n            WHEN carro = '1' \r\n                THEN (\r\n                    (COUNT(CASE WHEN CAST(REPLACE(valor, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n                     NULLIF(COUNT(*), 0)\r\n                    ) - 20\r\n                )\r\n            ELSE (\r\n                    COUNT(CASE WHEN CAST(REPLACE(valor, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n                    NULLIF(COUNT(*), 0)\r\n                )\r\n        END,\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM table_tof\r\nWHERE trem = CAST(${trem:csv} AS VARCHAR)\r\nGROUP BY trem, carro\r\nORDER BY carro;\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "% de ocupação do trem: ${trem}",
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "text",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 11,
+            "y": 51
+          },
+          "id": 16,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.1.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT\r\n    ROUND(\r\n        COUNT(CASE WHEN CAST(REPLACE(valor, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n        NULLIF(COUNT(*), 0),\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM table_tof\r\nWHERE trem = '2'\r\n  AND carro = '3';\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "Taxa de Ocupação",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "red",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 15,
+            "y": 51
+          },
+          "id": 18,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.1.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT\r\n    ROUND(\r\n        (\r\n            COUNT(CASE WHEN CAST(REPLACE(valor, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n            NULLIF(COUNT(*), 0)\r\n        ) - 130,\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM table_tof\r\nWHERE trem = '2'\r\n  AND carro = '3';\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "Diferença do aceitável",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 8,
+            "x": 11,
+            "y": 55
+          },
+          "id": 17,
+          "options": {
+            "amplitudeField": "valorMatriz",
+            "bevel": false,
+            "binType": "sum",
+            "cellShape": "rect",
+            "compact": true,
+            "dataFormat": "singleFrame",
+            "discreteScale": false,
+            "enableFocus": false,
+            "groupField": "y",
+            "invertColors": false,
+            "invertPalette": true,
+            "isDark": true,
+            "labelPositionType": "vertical",
+            "labelType": "group",
+            "leftMargin": 50,
+            "maxColumns": 1000,
+            "maxRows": 1000,
+            "maxType": "explicit",
+            "maxValue": "2500",
+            "minColumns": 148,
+            "numColumns": 148,
+            "outlineColor": "#000000",
+            "outlineColorType": "same",
+            "outlineWidth": 1.7,
+            "palette": "interpolateRdYlGn",
+            "rowField": "x",
+            "scaleType": "log",
+            "scaleWidth": 86,
+            "seed": 0,
+            "showScale": true,
+            "showXAxis": false,
+            "smooth": false,
+            "sortMode": "asc",
+            "sortType": "lex",
+            "spacing": 0,
+            "zeroColor": "#000000",
+            "zeroType": "regular"
+          },
+          "pluginVersion": "1.0.18",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "datasource": {
+                "type": "grafana-athena-datasource",
+                "uid": "cew0r808i79xcb"
+              },
+              "format": 1,
+              "rawSQL": "WITH x_values AS (\r\n    SELECT CAST(n AS INT) AS x\r\n    FROM UNNEST(SEQUENCE(0,6)) AS t(n)\r\n),\r\ny_values AS (\r\n    SELECT CAST(n AS INT) AS y\r\n    FROM UNNEST(SEQUENCE(0,24)) AS t(n)\r\n)\r\nSELECT\r\n    x_values.x,\r\n    y_values.y,\r\n    CAST(REPLACE(t.valor, ',', '') AS DOUBLE) AS valorMatriz,\r\n    current_timestamp AS __time\r\nFROM x_values\r\nCROSS JOIN y_values\r\nLEFT JOIN table_tof t\r\n    ON t.x = x_values.x\r\n   AND t.y = y_values.y\r\n   AND t.trem = CAST(${trem:csv} AS VARCHAR)\r\n   AND t.carro = CAST(${carro:csv} AS VARCHAR)\r\nORDER BY x_values.x, y_values.y;\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "Painel Trem ${trem} - Carro ${carro}",
+          "type": "boazreicher-mosaicplot-panel"
+        }
+      ],
+      "title": "Dados de temperatura e umidade por trem",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "2",
+          "value": "2"
+        },
+        "label": "Id do Trem",
+        "name": "trem",
+        "options": [
+          {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          {
+            "selected": true,
+            "text": "2",
+            "value": "2"
+          },
+          {
+            "selected": false,
+            "text": "3",
+            "value": "3"
+          }
+        ],
+        "query": "1,2,3",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "5",
+          "value": "5"
+        },
+        "description": "",
+        "label": "Id do vagão",
+        "name": "carro",
+        "options": [
+          {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          {
+            "selected": false,
+            "text": "2",
+            "value": "2"
+          },
+          {
+            "selected": false,
+            "text": "3",
+            "value": "3"
+          },
+          {
+            "selected": false,
+            "text": "4",
+            "value": "4"
+          },
+          {
+            "selected": true,
+            "text": "5",
+            "value": "5"
+          },
+          {
+            "selected": false,
+            "text": "6",
+            "value": "6"
+          }
+        ],
+        "query": "1,2,3,4,5,6",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "2",
+          "value": "2"
+        },
+        "label": "Plataforma",
+        "name": "plataforma",
+        "options": [
+          {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          {
+            "selected": true,
+            "text": "2",
+            "value": "2"
+          }
+        ],
+        "query": "1,2",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "2025-06-13T11:24:29.387Z",
+    "to": "2025-06-13T14:28:58.775Z"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "2 - Dash Operações",
+  "uid": "4a3a148f-ec34-4ba3-a540-7cd43842665e",
+  "version": 33
+}

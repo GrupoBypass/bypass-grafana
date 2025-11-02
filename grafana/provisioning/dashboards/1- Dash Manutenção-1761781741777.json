@@ -1,0 +1,1071 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 11,
+      "panels": [],
+      "title": "Dados de Pastilhas de freio",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-athena-datasource",
+        "uid": "cex3oj3n44ttsd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "WITH latest_per_pad AS (\r\n  SELECT\r\n    t.*,\r\n    ROW_NUMBER() OVER (PARTITION BY brake_pad_id ORDER BY timestamp DESC) AS rn\r\n  FROM table_optico t\r\n  WHERE \r\n    train_id IN (${carro:csv})\r\n)\r\nSELECT COUNT(train_id) AS qtd_critical\r\nFROM latest_per_pad\r\nWHERE rn = 1\r\n  AND sla_status = 'attention';\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Freios em Alerta",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-athena-datasource",
+        "uid": "cex3oj3n44ttsd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": true
+          },
+          "mappings": [
+            {
+              "options": {
+                "attention": {
+                  "color": "yellow",
+                  "index": 1,
+                  "text": "Atenção"
+                },
+                "critical": {
+                  "color": "red",
+                  "index": 2,
+                  "text": "Crítico"
+                },
+                "normal": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "Normal"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": ""
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 18,
+        "x": 6,
+        "y": 1
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "column": "$Carro",
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "SELECT \r\n  date_format(parse_datetime(t.timestamp, 'yyyy-MM-dd HH:mm:ss'), '%d/%m/%Y %H:%i:%s') AS \"Data e Hora\",\r\n  t.train_id AS \"ID do trem\",\r\n  t.brake_pad_id AS \"ID do Brake Pad\",\r\n  CAST(t.brake_pad_mm AS DOUBLE) AS \"Valor do Brake Pad (mm)\",\r\n  CAST(t.sla_status AS VARCHAR(255)) AS \"Status da Pastilha\"\r\nFROM table_optico t\r\nINNER JOIN (\r\n    SELECT \r\n        brake_pad_id,\r\n        MAX(parse_datetime(timestamp, 'yyyy-MM-dd HH:mm:ss')) AS ultimo_timestamp\r\n    FROM table_optico\r\n    WHERE train_id IN (${carro:csv})\r\n    GROUP BY brake_pad_id\r\n) ult ON t.brake_pad_id = ult.brake_pad_id\r\n     AND parse_datetime(t.timestamp, 'yyyy-MM-dd HH:mm:ss') = ult.ultimo_timestamp\r\nWHERE t.train_id IN (${carro:csv})\r\nORDER BY t.brake_pad_mm ASC;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Tabela Geral - Status dos Freios por Trem",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Data e Hora": 4,
+              "ID do Brake Pad": 1,
+              "ID do trem": 0,
+              "Status da Pastilha": 3,
+              "Valor do Brake Pad (mm)": 2
+            },
+            "orderByMode": "manual",
+            "renameByName": {
+              "Data e Hora": "Data",
+              "ID do Brake Pad": "Id do Brake Pad",
+              "ID do trem": "Id do Trem",
+              "Status da Pastilha": "Status da Pastilha",
+              "Valor do Brake Pad (mm)": "Valor do Brake Pad (mm)"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-athena-datasource",
+        "uid": "cex3oj3n44ttsd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 6
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "WITH latest_per_pad AS (\r\n  SELECT\r\n    t.*,\r\n    ROW_NUMBER() OVER (PARTITION BY brake_pad_id ORDER BY timestamp DESC) AS rn\r\n  FROM table_optico t\r\n  WHERE \r\n    train_id IN (${carro:csv})\r\n)\r\nSELECT COUNT(train_id) AS qtd_critical\r\nFROM latest_per_pad\r\nWHERE rn = 1\r\n  AND sla_status = 'critical';\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Freios Críticos",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-athena-datasource",
+        "uid": "cex3oj3n44ttsd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 10,
+        "x": 0,
+        "y": 11
+      },
+      "id": 8,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "WITH latest_per_pad AS (\r\n  SELECT\r\n    t.*,\r\n    ROW_NUMBER() OVER (PARTITION BY brake_pad_id ORDER BY timestamp DESC) AS rn\r\n  FROM table_optico t\r\n  WHERE \r\n    train_id IN (${carro:csv})\r\n)\r\nSELECT\r\n  sla_status AS \"SLA\",\r\n  COUNT(*) AS \"Quantidade\"\r\nFROM latest_per_pad\r\nWHERE rn = 1\r\nGROUP BY sla_status\r\nORDER BY sla_status;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Quantidade de pastilhas por estado",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-athena-datasource",
+        "uid": "cex3oj3n44ttsd"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Critical"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 14,
+        "x": 10,
+        "y": 11
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": "SELECT\r\n  parse_datetime(timestamp, 'yyyy-MM-dd HH:mm:ss') AS time,\r\n  AVG(brake_pad_mm) AS \"Média do Brake Pad (mm)\",\r\n  90 AS \"Attention\",\r\n  76 AS \"Critical\"\r\nFROM table_optico\r\nWHERE train_id IN (${carro:csv})\r\n  AND brake_pad_id IN (${brakepad:sqlstring})\r\nGROUP BY parse_datetime(timestamp, 'yyyy-MM-dd HH:mm:ss')\r\nORDER BY time;\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Historico de pastilha: ${brakepad} por trem:  ${carro}",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 10,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 8,
+            "x": 0,
+            "y": 19
+          },
+          "id": 2,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.1.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT ROUND(corr(headway_segundos, qtd_surtos),2) AS coef\r\n    FROM table_piezo\r\n\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "Relação entre Surtos Elétricos e Atrasos",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "cex3oj3n44ttsd"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 16,
+            "x": 8,
+            "y": 19
+          },
+          "id": 4,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "12.1.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT\r\n    date_format(\r\n        date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s'),\r\n        '%d/%m/%Y %H:%i:%s'\r\n    ) AS \"Data hora - Inicio\",\r\n    trilho AS \"Trilho\",\r\n    pressao_kpa AS \"Pressão (kPa)\",\r\n    headway_segundos AS \"Headway(s)\"\r\nFROM table_piezo\r\nWHERE pressao_kpa >= 650\r\n  AND headway_segundos >= 350\r\n  AND date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s') \r\n        BETWEEN timestamp '2025-06-16 00:00:00'\r\n            AND timestamp '2025-06-16 23:59:59'\r\nORDER BY date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s');\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "Eventos com Pressão Elevada e/ou Atraso",
+          "type": "table"
+        }
+      ],
+      "title": "Dados de deslocamento e atraso dos trens",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "query0",
+        "options": [],
+        "query": {
+          "connectionArgs": {
+            "catalog": "__default",
+            "database": "__default",
+            "region": "__default",
+            "resultReuseEnabled": false,
+            "resultReuseMaxAgeInMinutes": 60
+          },
+          "format": 1,
+          "rawSQL": ""
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "3"
+          ],
+          "value": [
+            "3"
+          ]
+        },
+        "includeAll": false,
+        "label": "Id do Trem",
+        "multi": true,
+        "name": "carro",
+        "options": [
+          {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          {
+            "selected": false,
+            "text": "2",
+            "value": "2"
+          },
+          {
+            "selected": true,
+            "text": "3",
+            "value": "3"
+          }
+        ],
+        "query": "1,2,3",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": [
+            "$__all"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "includeAll": true,
+        "label": "Id do Brake Pad",
+        "multi": true,
+        "name": "brakepad",
+        "options": [
+          {
+            "selected": false,
+            "text": "F1",
+            "value": "F1"
+          },
+          {
+            "selected": false,
+            "text": "F2",
+            "value": "F2"
+          },
+          {
+            "selected": false,
+            "text": "F3",
+            "value": "F3"
+          },
+          {
+            "selected": false,
+            "text": "F4",
+            "value": "F4"
+          },
+          {
+            "selected": false,
+            "text": "F5",
+            "value": "F5"
+          },
+          {
+            "selected": false,
+            "text": "F6",
+            "value": "F6"
+          },
+          {
+            "selected": false,
+            "text": "F7",
+            "value": "F7"
+          },
+          {
+            "selected": false,
+            "text": "F8",
+            "value": "F8"
+          },
+          {
+            "selected": false,
+            "text": "F9",
+            "value": "F9"
+          },
+          {
+            "selected": false,
+            "text": "F10",
+            "value": "F10"
+          },
+          {
+            "selected": false,
+            "text": "F11",
+            "value": "F11"
+          },
+          {
+            "selected": false,
+            "text": "F12",
+            "value": "F12"
+          },
+          {
+            "selected": false,
+            "text": "F13",
+            "value": "F13"
+          },
+          {
+            "selected": false,
+            "text": "F14",
+            "value": "F14"
+          },
+          {
+            "selected": false,
+            "text": "F15",
+            "value": "F15"
+          },
+          {
+            "selected": false,
+            "text": "F16",
+            "value": "F16"
+          },
+          {
+            "selected": false,
+            "text": "F17",
+            "value": "F17"
+          },
+          {
+            "selected": false,
+            "text": "F18",
+            "value": "F18"
+          },
+          {
+            "selected": false,
+            "text": "F19",
+            "value": "F19"
+          },
+          {
+            "selected": false,
+            "text": "F20",
+            "value": "F20"
+          },
+          {
+            "selected": false,
+            "text": "F21",
+            "value": "F21"
+          },
+          {
+            "selected": false,
+            "text": "F22",
+            "value": "F22"
+          },
+          {
+            "selected": false,
+            "text": "F23",
+            "value": "F23"
+          },
+          {
+            "selected": false,
+            "text": "F24",
+            "value": "F24"
+          },
+          {
+            "selected": false,
+            "text": "F25",
+            "value": "F25"
+          },
+          {
+            "selected": false,
+            "text": "F26",
+            "value": "F26"
+          },
+          {
+            "selected": false,
+            "text": "F27",
+            "value": "F27"
+          },
+          {
+            "selected": false,
+            "text": "F28",
+            "value": "F28"
+          },
+          {
+            "selected": false,
+            "text": "F29",
+            "value": "F29"
+          },
+          {
+            "selected": false,
+            "text": "F30",
+            "value": "F30"
+          },
+          {
+            "selected": false,
+            "text": "F31",
+            "value": "F31"
+          },
+          {
+            "selected": false,
+            "text": "F32",
+            "value": "F32"
+          },
+          {
+            "selected": false,
+            "text": "F33",
+            "value": "F33"
+          },
+          {
+            "selected": false,
+            "text": "F34",
+            "value": "F34"
+          },
+          {
+            "selected": false,
+            "text": "F35",
+            "value": "F35"
+          },
+          {
+            "selected": false,
+            "text": "F36",
+            "value": "F36"
+          },
+          {
+            "selected": false,
+            "text": "F37",
+            "value": "F37"
+          },
+          {
+            "selected": false,
+            "text": "F38",
+            "value": "F38"
+          },
+          {
+            "selected": false,
+            "text": "F39",
+            "value": "F39"
+          },
+          {
+            "selected": false,
+            "text": "F40",
+            "value": "F40"
+          },
+          {
+            "selected": false,
+            "text": "F41",
+            "value": "F41"
+          },
+          {
+            "selected": false,
+            "text": "F42",
+            "value": "F42"
+          },
+          {
+            "selected": false,
+            "text": "F43",
+            "value": "F43"
+          },
+          {
+            "selected": false,
+            "text": "F44",
+            "value": "F44"
+          },
+          {
+            "selected": false,
+            "text": "F45",
+            "value": "F45"
+          },
+          {
+            "selected": false,
+            "text": "F46",
+            "value": "F46"
+          },
+          {
+            "selected": false,
+            "text": "F47",
+            "value": "F47"
+          },
+          {
+            "selected": false,
+            "text": "F48",
+            "value": "F48"
+          },
+          {
+            "selected": false,
+            "text": "F49",
+            "value": "F49"
+          },
+          {
+            "selected": false,
+            "text": "F50",
+            "value": "F50"
+          },
+          {
+            "selected": false,
+            "text": "F51",
+            "value": "F51"
+          },
+          {
+            "selected": false,
+            "text": "F52",
+            "value": "F52"
+          },
+          {
+            "selected": false,
+            "text": "F53",
+            "value": "F53"
+          },
+          {
+            "selected": false,
+            "text": "F54",
+            "value": "F54"
+          },
+          {
+            "selected": false,
+            "text": "F55",
+            "value": "F55"
+          },
+          {
+            "selected": false,
+            "text": "F56",
+            "value": "F56"
+          },
+          {
+            "selected": false,
+            "text": "F57",
+            "value": "F57"
+          },
+          {
+            "selected": false,
+            "text": "F58",
+            "value": "F58"
+          },
+          {
+            "selected": false,
+            "text": "F59",
+            "value": "F59"
+          },
+          {
+            "selected": false,
+            "text": "F60",
+            "value": "F60"
+          },
+          {
+            "selected": false,
+            "text": "F61",
+            "value": "F61"
+          },
+          {
+            "selected": false,
+            "text": "F62",
+            "value": "F62"
+          },
+          {
+            "selected": false,
+            "text": "F63",
+            "value": "F63"
+          },
+          {
+            "selected": false,
+            "text": "F64",
+            "value": "F64"
+          }
+        ],
+        "query": "F1,F2,F3,F4,F5,F6,F7,F8,F9,F10,F11,F12,F13,F14,F15,F16,F17,F18,F19,F20,F21,F22,F23,F24,F25,F26,F27,F28,F29,F30,F31,F32,F33,F34,F35,F36,F37,F38,F39,F40,F41,F42,F43,F44,F45,F46,F47,F48,F49,F50,F51,F52,F53,F54,F55,F56,F57,F58,F59,F60,F61,F62,F63,F64",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "2025-03-01T03:01:53.484Z",
+    "to": "2025-03-06T01:18:00.000Z"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "1- Dash Manutenção",
+  "uid": "7f0b83f9-0af0-4994-aab1-2ba1522d60b3",
+  "version": 35
+}

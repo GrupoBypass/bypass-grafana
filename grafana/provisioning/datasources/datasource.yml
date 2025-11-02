@@ -1,0 +1,17 @@
+apiVersion: 1
+
+datasources:
+  - name: Athena
+    type: grafana-athena-datasource
+    access: proxy
+    orgId: 1
+    isDefault: true
+    jsonData:
+      defaultRegion: us-east-1             # ajuste para sua região AWS
+      catalog: AwsDataCatalog
+      database: my_database_name           # substitua pelo nome do seu banco Athena
+      workgroup: primary                   # ou outro workgroup
+      authType: keys
+    secureJsonData:
+      accessKey: ${AWS_ACCESS_KEY_ID}
+      secretKey: ${AWS_SECRET_ACCESS_KEY}
