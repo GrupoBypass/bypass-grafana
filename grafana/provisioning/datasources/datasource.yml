@@ -11,7 +11,8 @@ datasources:
       catalog: AwsDataCatalog
       database: default
       workgroup: primary                   # ou outro workgroup
-      authType: keys
+      authType: default
+      outputLocation: s3://s3-historico-grafana
     secureJsonData:
       accessKey: ${AWS_ACCESS_KEY_ID}
       secretKey: ${AWS_SECRET_ACCESS_KEY}
