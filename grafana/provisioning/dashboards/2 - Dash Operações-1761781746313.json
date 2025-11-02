@@ -514,7 +514,7 @@
             "uid": "cew0r808i79xcb"
           },
           "format": 1,
-          "rawSQL": "SELECT \r\n  idcarro AS Carro,\r\n  valorcarro AS Valor\r\nFROM table_carros;\r\n",
+          "rawSQL": "SELECT \r\n  id_carro AS Carro,\r\n  valor_carro AS Valor\r\nFROM bypass_table_carros\r\nWHERE plataforma = ${plataforma};\r\n",
           "refId": "A"
         }
       ],
@@ -568,7 +568,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "SELECT * from table_wordcloud",
+          "rawSQL": "SELECT * from bypass_table_wordcloud",
           "refId": "A"
         }
       ],
@@ -1431,5 +1431,5 @@
   "timezone": "",
   "title": "2 - Dash Operações",
   "uid": "4a3a148f-ec34-4ba3-a540-7cd43842665e",
-  "version": 3
+  "version": 4
 }
