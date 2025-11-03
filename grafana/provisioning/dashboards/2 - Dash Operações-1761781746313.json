@@ -141,7 +141,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "WITH base AS (\r\n    SELECT \r\n        AVG(headway_segundos) AS media_intervalo\r\n    FROM table_piezo\r\n    WHERE hour(date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s')) BETWEEN 12 AND 17\r\n)\r\nSELECT \r\n    CASE\r\n        WHEN ABS(media_intervalo) <= 180 THEN 0\r\n        WHEN ABS(media_intervalo) <= 360 THEN 1\r\n        ELSE 2\r\n    END AS classificacao_intervalo_num\r\nFROM base;\r\n",
+          "rawSQL": "WITH base AS (\r\n    SELECT \r\n        AVG(TRY_CAST(headway AS DOUBLE)) AS media_intervalo\r\n    FROM bypass_table_piezo\r\n    WHERE hour(date_parse(data_hora_inicio, '%Y-%m-%d %H:%i:%s')) BETWEEN 12 AND 17\r\n)\r\nSELECT \r\n    CASE\r\n        WHEN ABS(media_intervalo) <= 180 THEN 0\r\n        WHEN ABS(media_intervalo) <= 360 THEN 1\r\n        ELSE 2\r\n    END AS classificacao_intervalo_num\r\nFROM base;\r\n",
           "refId": "A"
         }
       ],
@@ -369,7 +369,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "SELECT \r\n    ROUND(AVG(velocidade_kmh), 2) AS media_velocidade_kmh\r\nFROM table_piezo\r\nWHERE hour(date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s')) BETWEEN 12 AND 17;\r\n",
+          "rawSQL": "SELECT \r\n    ROUND(AVG(CAST(velocidade_kmh AS DOUBLE)), 2) AS media_velocidade_kmh\r\nFROM bypass_table_piezo\r\nWHERE hour(date_parse(data_hora_inicio, '%Y-%m-%d %H:%i:%s')) BETWEEN 12 AND 17;\r\n",
           "refId": "A"
         }
       ],
@@ -439,7 +439,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "SELECT \r\n    ROUND(AVG(headway_segundos)/60, 0) AS media_atraso_segundos\r\nFROM table_piezo\r\nWHERE hour(date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s')) BETWEEN 12 AND 17;\r\n",
+          "rawSQL": "SELECT \r\n    ROUND(AVG(CAST(headway AS DOUBLE)) / 60, 0) AS media_atraso_segundos\r\nFROM bypass_table_piezo\r\nWHERE hour(date_parse(data_hora_inicio, '%Y-%m-%d %H:%i:%s')) BETWEEN 12 AND 17;\r\n",
           "refId": "A"
         }
       ],
@@ -467,8 +467,12 @@
                 "value": 0
               },
               {
+                "color": "#EAB839",
+                "value": 55
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 75
               }
             ]
           },
@@ -1431,5 +1435,5 @@
   "timezone": "",
   "title": "2 - Dash Operações",
   "uid": "4a3a148f-ec34-4ba3-a540-7cd43842665e",
-  "version": 4
+  "version": 5
 }
