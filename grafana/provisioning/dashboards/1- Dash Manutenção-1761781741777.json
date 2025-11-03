@@ -499,7 +499,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -507,142 +507,143 @@
         "y": 20
       },
       "id": 10,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "af2x5ksu9we0wb"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "decimals": 2,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 8,
+            "x": 0,
+            "y": 21
+          },
+          "id": 2,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.2.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "WITH surtos_por_passagem AS (\r\n    SELECT \r\n        TRY_CAST(p.headway AS DOUBLE) AS headway_valor,\r\n        COUNT(d.datahora) AS qtd_surtos\r\n    FROM bypass_table_piezo p\r\n    LEFT JOIN bypass_table_dps d\r\n        ON d.corrente_surto_ka != 0\r\n        AND date_parse(d.datahora, '%Y-%m-%d %H:%i:%s')\r\n            BETWEEN date_parse(p.data_hora_inicio, '%Y-%m-%d %H:%i:%s')\r\n            AND date_parse(p.data_hora_fim, '%Y-%m-%d %H:%i:%s')\r\n    GROUP BY p.headway\r\n)\r\nSELECT \r\n    ROUND(corr(headway_valor, qtd_surtos), 2) AS coef_correlacao\r\nFROM surtos_por_passagem\r\nWHERE headway_valor IS NOT NULL;\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "Relação entre Surtos Elétricos e Atrasos",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "grafana-athena-datasource",
+            "uid": "af2x5ksu9we0wb"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 16,
+            "x": 8,
+            "y": 21
+          },
+          "id": 4,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true
+          },
+          "pluginVersion": "12.2.1",
+          "targets": [
+            {
+              "connectionArgs": {
+                "catalog": "__default",
+                "database": "__default",
+                "region": "__default",
+                "resultReuseEnabled": false,
+                "resultReuseMaxAgeInMinutes": 60
+              },
+              "format": 1,
+              "rawSQL": "SELECT\r\n    date_format(\r\n        date_parse(data_hora_inicio, '%Y-%m-%d %H:%i:%s'),\r\n        '%d/%m/%Y %H:%i:%s'\r\n    ) AS \"Data hora - Inicio\",\r\n    trilho AS \"Trilho\",\r\n    TRY_CAST(pressao_kpa AS DOUBLE) AS \"Pressão (kPa)\",\r\n    TRY_CAST(headway AS DOUBLE) AS \"Headway(s)\"\r\nFROM bypass_table_piezo\r\nWHERE TRY_CAST(pressao_kpa AS DOUBLE) >= 650\r\n  AND TRY_CAST(headway AS DOUBLE) >= 350\r\n  AND date_parse(data_hora_inicio, '%Y-%m-%d %H:%i:%s') \r\n        BETWEEN timestamp '2025-06-16 00:00:00'\r\n            AND timestamp '2025-06-16 23:59:59'\r\nORDER BY date_parse(data_hora_inicio, '%Y-%m-%d %H:%i:%s');\r\n",
+              "refId": "A"
+            }
+          ],
+          "title": "Eventos com Pressão Elevada e/ou Atraso",
+          "type": "table"
+        }
+      ],
       "title": "Dados de deslocamento e atraso dos trens",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "grafana-athena-datasource",
-        "uid": "af2x5ksu9we0wb"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 8,
-        "x": 0,
-        "y": 21
-      },
-      "id": 2,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "12.2.1",
-      "targets": [
-        {
-          "connectionArgs": {
-            "catalog": "__default",
-            "database": "__default",
-            "region": "__default",
-            "resultReuseEnabled": false,
-            "resultReuseMaxAgeInMinutes": 60
-          },
-          "format": 1,
-          "rawSQL": "SELECT ROUND(corr(headway_segundos, qtd_surtos),2) AS coef\r\n    FROM table_piezo\r\n\r\n",
-          "refId": "A"
-        }
-      ],
-      "title": "Relação entre Surtos Elétricos e Atrasos",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "grafana-athena-datasource",
-        "uid": "af2x5ksu9we0wb"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 16,
-        "x": 8,
-        "y": 21
-      },
-      "id": 4,
-      "options": {
-        "cellHeight": "sm",
-        "showHeader": true
-      },
-      "pluginVersion": "12.2.1",
-      "targets": [
-        {
-          "connectionArgs": {
-            "catalog": "__default",
-            "database": "__default",
-            "region": "__default",
-            "resultReuseEnabled": false,
-            "resultReuseMaxAgeInMinutes": 60
-          },
-          "format": 1,
-          "rawSQL": "SELECT\r\n    date_format(\r\n        date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s'),\r\n        '%d/%m/%Y %H:%i:%s'\r\n    ) AS \"Data hora - Inicio\",\r\n    trilho AS \"Trilho\",\r\n    pressao_kpa AS \"Pressão (kPa)\",\r\n    headway_segundos AS \"Headway(s)\"\r\nFROM table_piezo\r\nWHERE pressao_kpa >= 650\r\n  AND headway_segundos >= 350\r\n  AND date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s') \r\n        BETWEEN timestamp '2025-06-16 00:00:00'\r\n            AND timestamp '2025-06-16 23:59:59'\r\nORDER BY date_parse(datahora_inicio, '%m/%d/%Y %H:%i:%s');\r\n",
-          "refId": "A"
-        }
-      ],
-      "title": "Eventos com Pressão Elevada e/ou Atraso",
-      "type": "table"
     }
   ],
   "preload": false,
@@ -1057,5 +1058,5 @@
   "timezone": "browser",
   "title": "1- Dash Manutenção",
   "uid": "7f0b83f9-0af0-4994-aab1-2ba1522d60b3",
-  "version": 2
+  "version": 3
 }
