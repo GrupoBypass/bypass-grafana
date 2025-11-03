@@ -1102,7 +1102,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "SELECT\r\n    CONCAT('Trem ', trem, ' - Carro ', carro) AS label,\r\n    ROUND(\r\n        CASE \r\n            WHEN carro = '1' \r\n                THEN (\r\n                    (COUNT(CASE WHEN CAST(REPLACE(valor, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n                     NULLIF(COUNT(*), 0)\r\n                    ) - 20\r\n                )\r\n            ELSE (\r\n                    COUNT(CASE WHEN CAST(REPLACE(valor, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n                    NULLIF(COUNT(*), 0)\r\n                )\r\n        END,\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM table_tof\r\nWHERE trem = CAST(${trem:csv} AS VARCHAR)\r\nGROUP BY trem, carro\r\nORDER BY carro;\r\n",
+          "rawSQL": "SELECT\r\n    CONCAT('Trem ', trem_id, ' - Carro ', carro_id) AS label,\r\n    ROUND(\r\n        CASE \r\n            WHEN carro_id = '1' \r\n                THEN (\r\n                    (COUNT(CASE WHEN CAST(REPLACE(dist, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n                     NULLIF(COUNT(*), 0)\r\n                    ) - 20\r\n                )\r\n            ELSE (\r\n                    COUNT(CASE WHEN CAST(REPLACE(dist, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n                    NULLIF(COUNT(*), 0)\r\n                )\r\n        END,\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM bypass_table_tof\r\nWHERE trem_id = CAST(${trem:csv} AS VARCHAR)\r\nGROUP BY trem_id, carro_id\r\nORDER BY carro_id;\r\n",
           "refId": "A"
         }
       ],
@@ -1172,7 +1172,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "SELECT\r\n    ROUND(\r\n        COUNT(CASE WHEN CAST(REPLACE(valor, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n        NULLIF(COUNT(*), 0),\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM table_tof\r\nWHERE trem = '2'\r\n  AND carro = '3';\r\n",
+          "rawSQL": "SELECT\r\n    ROUND(\r\n        COUNT(CASE WHEN CAST(REPLACE(CAST(dist AS VARCHAR), ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n        NULLIF(COUNT(*), 0),\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM bypass_table_tof\r\nWHERE trem_id = CAST(${trem:csv} AS VARCHAR)\r\n  AND carro_id = CAST(${carro:csv} AS VARCHAR);\r\n",
           "refId": "A"
         }
       ],
@@ -1242,7 +1242,7 @@
             "resultReuseMaxAgeInMinutes": 60
           },
           "format": 1,
-          "rawSQL": "SELECT\r\n    ROUND(\r\n        (\r\n            COUNT(CASE WHEN CAST(REPLACE(valor, ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n            NULLIF(COUNT(*), 0)\r\n        ) - 130,\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM table_tof\r\nWHERE trem = '2'\r\n  AND carro = '3';\r\n",
+          "rawSQL": "SELECT\r\n    ROUND(\r\n        (\r\n            COUNT(CASE WHEN CAST(REPLACE(CAST(dist AS VARCHAR), ',', '') AS DOUBLE) < 1750 THEN 1 END) * 100.0 /\r\n            NULLIF(COUNT(*), 0)\r\n        ) - 130,\r\n        2\r\n    ) AS taxa_ocupacao_percent\r\nFROM bypass_table_tof \r\nWHERE trem_id = CAST(${trem:csv} AS VARCHAR)\r\n  AND carro_id = CAST(${carro:csv} AS VARCHAR);\r\n",
           "refId": "A"
         }
       ],
@@ -1274,7 +1274,7 @@
         "dataFormat": "singleFrame",
         "discreteScale": false,
         "enableFocus": false,
-        "groupField": "y",
+        "groupField": "x",
         "invertColors": false,
         "invertPalette": true,
         "isDark": true,
@@ -1285,13 +1285,13 @@
         "maxRows": 1000,
         "maxType": "explicit",
         "maxValue": "2500",
-        "minColumns": 148,
-        "numColumns": 148,
+        "minColumns": 139,
+        "numColumns": 139,
         "outlineColor": "#000000",
         "outlineColorType": "same",
         "outlineWidth": 1.7,
         "palette": "interpolateRdYlGn",
-        "rowField": "x",
+        "rowField": "y",
         "scaleType": "log",
         "scaleWidth": 86,
         "seed": 0,
@@ -1319,7 +1319,7 @@
             "uid": "cew0r808i79xcb"
           },
           "format": 1,
-          "rawSQL": "WITH x_values AS (\r\n    SELECT CAST(n AS INT) AS x\r\n    FROM UNNEST(SEQUENCE(0,6)) AS t(n)\r\n),\r\ny_values AS (\r\n    SELECT CAST(n AS INT) AS y\r\n    FROM UNNEST(SEQUENCE(0,24)) AS t(n)\r\n)\r\nSELECT\r\n    x_values.x,\r\n    y_values.y,\r\n    CAST(REPLACE(t.valor, ',', '') AS DOUBLE) AS valorMatriz,\r\n    current_timestamp AS __time\r\nFROM x_values\r\nCROSS JOIN y_values\r\nLEFT JOIN table_tof t\r\n    ON t.x = x_values.x\r\n   AND t.y = y_values.y\r\n   AND t.trem = CAST(${trem:csv} AS VARCHAR)\r\n   AND t.carro = CAST(${carro:csv} AS VARCHAR)\r\nORDER BY x_values.x, y_values.y;\r\n",
+          "rawSQL": "WITH x_values AS (\r\n    SELECT CAST(n AS INT) AS x\r\n    FROM UNNEST(SEQUENCE(0,6)) AS t(n)\r\n),\r\ny_values AS (\r\n    SELECT CAST(n AS INT) AS y\r\n    FROM UNNEST(SEQUENCE(0,24)) AS t(n)\r\n)\r\nSELECT\r\n    x_values.x,\r\n    y_values.y,\r\n    CAST(REPLACE(t.dist, ',', '') AS DOUBLE) AS valorMatriz,\r\n    current_timestamp AS __time\r\nFROM x_values\r\nCROSS JOIN y_values\r\nLEFT JOIN bypass_table_tof t\r\n    ON t.x_block = x_values.x\r\n   AND t.y_block = y_values.y\r\n   AND t.trem_id = CAST(${trem:csv} AS VARCHAR)\r\n   AND t.carro_id = CAST(${carro:csv} AS VARCHAR)\r\nWHERE t.dist IS NOT NULL AND t.dist <> ''\r\nORDER BY x_values.x, y_values.y;\r\n",
           "refId": "A"
         }
       ],
@@ -1435,5 +1435,5 @@
   "timezone": "",
   "title": "2 - Dash Operações",
   "uid": "4a3a148f-ec34-4ba3-a540-7cd43842665e",
-  "version": 5
+  "version": 6
 }
