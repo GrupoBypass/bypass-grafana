@@ -1,3 +1,9 @@
+variable "bypass_state_bucket_name" {
+  description = "Bucket de State do Terraform"
+  type        = string
+  default     = "bypass-state-bucket"
+}
+
 variable "aws_region" {
   description = "Região AWS"
   type        = string

@@ -12,7 +12,7 @@ terraform {
 data "terraform_remote_state" "bypass_transformer" {
   backend = "s3"
   config = {
-    bucket = "bypass-terraform-backup"
+    bucket = var.bypass_state_bucket_name
     key    = "terraform/state.tfstate"
     region = "us-east-1"
   }

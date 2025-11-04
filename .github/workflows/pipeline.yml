@@ -37,7 +37,7 @@ jobs:
         run: |
           cd terraform
           terraform init -backend-config=backend.hcl
-          terraform apply -auto-approve 
+          terraform apply -var="bypass_state_bucket_name=${{ secrets.STATE_BUCKET_NAME }}" -auto-approve 
 
       - name: Export Terraform outputs
         id: outputs
