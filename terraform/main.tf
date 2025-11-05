@@ -50,7 +50,7 @@ resource "aws_security_group" "grafana_sg" {
 
   tags = {
     Name    = "bypass-grafana-sg"
-    Project = var.project_name
+    Project = "bypass-grafana"
   }
 }
 
