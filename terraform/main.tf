@@ -70,7 +70,7 @@ resource "aws_instance" "grafana" {
 }
 
 # ============================
-# (Opcional) Bucket para backups de dashboards
+# Bucket para backups de dashboards
 # ============================
 resource "random_id" "bucket_suffix" {
   byte_length = 4
@@ -89,6 +89,35 @@ resource "aws_s3_bucket_versioning" "grafana_backup_versioning" {
 }
 
 # ============================
+# Amazon Athena
+# ============================
+
+resource "random_string" "athena_suffix" {
+  length  = 4
+  upper   = false
+  number  = true
+  special = false
+}
+
+resource "aws_s3_bucket" "athena_results" {
+  bucket = "bypass-athena-results-${random_string.athena_suffix.result}"
+
+  versioning {
+    enabled = true
+  }
+
+  tags = {
+    Name = "bypass-athena-results"
+  }
+}
+
+resource "aws_glue_catalog_database" "athena_db" {
+  name = "bypass_athena_${var.env}"
+
+  location_uri = "s3://${aws_s3_bucket.client.bucket}/athena/${var.env}/"
+}
+
+# ============================
 # Outputs
 # ============================
 output "grafana_ec2_public_ip" {
@@ -97,4 +126,12 @@ output "grafana_ec2_public_ip" {
 
 output "grafana_backup_bucket" {
   value = aws_s3_bucket.grafana_backup.bucket
+}
+
+output "athena_database_name" {
+  value       = aws_glue_catalog_database.athena_db.name
+}
+
+output "athena_results_bucket" {
+  value       = aws_s3_bucket.athena_results.bucket
 }

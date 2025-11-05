@@ -45,6 +45,7 @@ jobs:
           cd terraform
           echo "grafana_ip=$(terraform output -raw grafana_ec2_public_ip)" >> $GITHUB_OUTPUT
           echo "grafana_backup=$(terraform output -raw grafana_backup_bucket)" >> $GITHUB_OUTPUT
+          echo "athena_results=$(terraform output -raw athena_results_bucket)" >> $GITHUB_OUTPUT
 
       - name: Criar inventory Ansible
         run: |
@@ -60,6 +61,7 @@ jobs:
         run: |
           cd ansible
           echo "GRAFANA_BACKUP_BUCKET=${{ steps.outputs.outputs.grafana_backup }}" > .env
+          echo "ATHENA_OUTPUT_LOCATION=${{ steps.outputs.outputs.athena_results_bucket }}" >> .env
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}" >> .env
