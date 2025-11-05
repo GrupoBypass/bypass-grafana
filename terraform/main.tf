@@ -39,7 +39,7 @@ resource "aws_security_group" "grafana_sg" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+ }
 
   egress {
     from_port   = 0
@@ -49,7 +49,7 @@ resource "aws_security_group" "grafana_sg" {
   }
 
   tags = {
-    Name    = "${var.project_name}-sg"
+    Name    = "bypass-grafana-sg"
     Project = var.project_name
   }
 }
