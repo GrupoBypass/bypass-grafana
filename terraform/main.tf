@@ -72,8 +72,12 @@ resource "aws_instance" "grafana" {
 # ============================
 # (Opcional) Bucket para backups de dashboards
 # ============================
+resource "random_id" "bucket_suffix" {
+  byte_length = 4
+}
+
 resource "aws_s3_bucket" "grafana_backup" {
-  bucket        = "${var.project_name}-backup"
+  bucket        = "${var.project_name}-backup-${random_id.bucket_suffix.hex}"
   force_destroy = true
 }
 
