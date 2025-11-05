@@ -112,7 +112,7 @@ resource "aws_s3_bucket" "athena_results" {
 }
 
 resource "aws_glue_catalog_database" "athena_db" {
-  name = "bypass_athena_${var.env}"
+  name = "bypass_athena"
 
   location_uri = "s3://${data.terraform_remote_state.bypass_transformer.outputs.client_bucket_name}"
 }
