@@ -77,7 +77,7 @@ resource "random_id" "bucket_suffix" {
 }
 
 resource "aws_s3_bucket" "grafana_backup" {
-  bucket        = "${var.project_name}-backup-${random_id.bucket_suffix.hex}"
+  bucket        = "bypass-grafana-backup-${random_id.bucket_suffix.hex}"
   force_destroy = true
 }
 
@@ -114,7 +114,7 @@ resource "aws_s3_bucket" "athena_results" {
 resource "aws_glue_catalog_database" "athena_db" {
   name = "bypass_athena_${var.env}"
 
-  location_uri = "s3://${aws_s3_bucket.client.bucket}/athena/${var.env}/"
+  location_uri = "s3://${data.terraform_remote_state.bypass_transformer.outputs.client_bucket_name}"
 }
 
 # ============================

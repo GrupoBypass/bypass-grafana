@@ -10,12 +10,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "project_name" {
-  description = "Nome base do projeto"
-  type        = string
-  default     = "bypass-grafana"
-}
-
 variable "instance_type" {
   description = "Tipo da instância EC2"
   type        = string
