@@ -47,6 +47,7 @@ jobs:
           cd terraform
           echo "grafana_ip=$(terraform output -raw grafana_ec2_public_ip)" >> $GITHUB_OUTPUT
           echo "grafana_backup=$(terraform output -raw grafana_backup_bucket)" >> $GITHUB_OUTPUT
+          echo "S3_CLIENT=$(terraform output -raw client_bucket_uri)" >> $GITHUB_OUTPUT
           echo "athena_results=$(terraform output -raw athena_results_bucket)" >> $GITHUB_OUTPUT
 
       - name: Criar inventory Ansible

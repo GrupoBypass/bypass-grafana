@@ -135,3 +135,7 @@ output "athena_database_name" {
 output "athena_results_bucket" {
   value       = aws_s3_bucket.athena_results.bucket
 }
+
+output "client_bucket_uri" {
+  value = data.terraform_remote_state.bypass_transformer.outputs.client_bucket_name
+}
