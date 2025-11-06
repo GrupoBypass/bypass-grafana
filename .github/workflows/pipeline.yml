@@ -80,3 +80,28 @@ jobs:
           cd ansible
           export ANSIBLE_HOST_KEY_CHECKING=False
           ansible-playbook -i inventory.ini setup.yml
+
+      - name: Substitute environment variables in SQL files
+        run: |
+          mkdir -p sql_processed
+          for f in athena/queries/*.sql; do
+            envsubst < "$f" > "athena/processed_queries/$(basename $f)"
+          done
+        env:
+          S3_CLIENT: ${{ steps.outputs.outputs.S3_CLIENT }}
+
+      - name: Run Athena queries
+        run: |
+          for f in athena/processed_queries/*.sql; do
+            echo "Running query: $f"
+            aws athena start-query-execution \
+              --query-string "$(cat $f)" \
+              --query-execution-context Database=bypass_db \
+              --result-configuration OutputLocation="s3://$S3_CLIENT/query-results/"
+          done
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+          S3_CLIENT: ${{ steps.outputs.outputs.S3_CLIENT }}
+
