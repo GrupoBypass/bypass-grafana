@@ -13,7 +13,6 @@ datasources:
       workgroup: primary
       authType: default
       outputLocation: ${ATHENA_OUTPUT_LOCATION}
-      outputLocation: s3://s3-historico-grafana
     secureJsonData:
       accessKey: ${AWS_ACCESS_KEY_ID}
       secretKey: ${AWS_SECRET_ACCESS_KEY}
