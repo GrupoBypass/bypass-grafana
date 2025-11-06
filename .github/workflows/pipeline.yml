@@ -7,6 +7,11 @@ on:
 jobs:
   provisioning:
     runs-on: ubuntu-latest
+    outputs:
+      grafana_ip: ${{ steps.export.outputs.grafana_ip }}
+      grafana_backup: ${{ steps.export.outputs.grafana_backup }}
+      S3_CLIENT: ${{ steps.export.outputs.S3_CLIENT }}
+      athena_results: ${{ steps.export.outputs.athena_results }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -42,7 +47,7 @@ jobs:
           terraform apply -var="bypass_state_bucket_name=${{ secrets.STATE_BUCKET_NAME }}" -auto-approve 
 
       - name: Export Terraform outputs
-        id: outputs
+        id: export
         run: |
           cd terraform
           echo "grafana_ip=$(terraform output -raw grafana_ec2_public_ip)" >> $GITHUB_OUTPUT
@@ -68,7 +73,7 @@ jobs:
       - name: Criar inventory Ansible
         run: |
           echo "[grafana]" > ansible/inventory.ini
-          echo "${{ steps.outputs.outputs.grafana_ip }} ansible_user=ec2-user ansible_ssh_private_key_file=bypass-key.pem" >> ansible/inventory.ini
+          echo "${{ needs.provisioning.outputs.grafana_ip }} ansible_user=ec2-user ansible_ssh_private_key_file=bypass-key.pem" >> ansible/inventory.ini
 
       - name: Adicionar chave SSH
         run: |
@@ -78,8 +83,8 @@ jobs:
       - name: Criar .env
         run: |
           cd ansible
-          echo "GRAFANA_BACKUP_BUCKET=${{ steps.outputs.outputs.grafana_backup }}" > .env
-          echo "ATHENA_OUTPUT_LOCATION=${{ steps.outputs.outputs.athena_results_bucket }}" >> .env
+          echo "GRAFANA_BACKUP_BUCKET=${{ needs.provisioning.outputs.grafana_backup }}" > .env
+          echo "ATHENA_OUTPUT_LOCATION=${{ needs.provisioning.outputs.athena_results_bucket }}" >> .env
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}" >> .env
@@ -103,7 +108,7 @@ jobs:
             envsubst < "$f" > "athena/processed_queries/$(basename $f)"
           done
         env:
-          S3_CLIENT: ${{ steps.outputs.outputs.S3_CLIENT }}
+          S3_CLIENT: ${{ needs.provisioning.outputs.S3_CLIENT }}
 
       - name: Run Athena queries
         run: |
@@ -118,5 +123,5 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
-          S3_CLIENT: ${{ steps.outputs.outputs.S3_CLIENT }}
+          S3_CLIENT: ${{ needs.provisioning.outputs.S3_CLIENT }}
 
