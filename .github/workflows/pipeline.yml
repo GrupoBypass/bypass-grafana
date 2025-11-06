@@ -83,7 +83,7 @@ jobs:
 
       - name: Substitute environment variables in SQL files
         run: |
-          mkdir -p sql_processed
+          mkdir -p athena/processed_queries
           for f in athena/queries/*.sql; do
             envsubst < "$f" > "athena/processed_queries/$(basename $f)"
           done
