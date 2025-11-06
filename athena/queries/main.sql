@@ -1,4 +1,3 @@
---1. Ocupação:
 CREATE EXTERNAL TABLE bypass_table_ocupacao (
     sensor_id STRING,
     trem_id STRING,
@@ -18,8 +17,6 @@ TBLPROPERTIES (
 );
 
 
-
---2. DHT11:
 CREATE EXTERNAL TABLE nova_tabela_sensores_ambiente (
   datahora STRING,
   temperatura STRING,
@@ -42,7 +39,6 @@ TBLPROPERTIES (
 
 
 
---3. Omron:
 CREATE EXTERNAL TABLE bypass_table_omron (
   x STRING,
   y STRING,
@@ -62,7 +58,6 @@ TBLPROPERTIES (
 
 
 
---4. DPS:
 CREATE EXTERNAL TABLE bypass_table_dps (
   id_circuito string,
   modelo string,
@@ -88,7 +83,6 @@ TBLPROPERTIES (
 
 
 
---5. WordCloud:
 CREATE EXTERNAL TABLE bypass_table_wordcloud (
   palavra string,
   frequencia int
@@ -106,7 +100,6 @@ TBLPROPERTIES (
 
 
 
---6. Carros (Meus Vagões):
 CREATE EXTERNAL TABLE bypass_table_carros (
   valor_carro string,
   id_carro int,
@@ -125,7 +118,6 @@ TBLPROPERTIES (
 
 
 
---7. Piezo:
 CREATE EXTERNAL TABLE bypass_table_piezo (
     trem_id STRING,
     sensor_id_origem STRING,
@@ -152,7 +144,6 @@ TBLPROPERTIES ('skip.header.line.count'='1');
 
 
 
---8. ToF:
 CREATE EXTERNAL TABLE bypass_table_tof (
     y_block int,
     x_block int,
@@ -175,7 +166,6 @@ TBLPROPERTIES ('skip.header.line.count'='1');
 
 
 
---9: Optico
 CREATE EXTERNAL TABLE bypass_table_optico (
     timestamp STRING,
     train_id int,
