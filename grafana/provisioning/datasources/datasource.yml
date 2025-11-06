@@ -1,7 +1,7 @@
 apiVersion: 1
 
 datasources:
-  - name: Athena
+  - name: grafana-athena-datasource
     type: grafana-athena-datasource
     access: proxy
     orgId: 1
