@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy:
+  provisioning:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -50,6 +50,10 @@ jobs:
           echo "S3_CLIENT=$(terraform output -raw client_bucket_uri)" >> $GITHUB_OUTPUT
           echo "athena_results=$(terraform output -raw athena_results_bucket)" >> $GITHUB_OUTPUT
 
+  deploy:
+    needs: provisioning
+    runs-on: ubuntu-latest
+    steps:
       - name: Criar inventory Ansible
         run: |
           echo "[grafana]" > ansible/inventory.ini
