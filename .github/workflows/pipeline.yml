@@ -116,7 +116,7 @@ jobs:
             echo "Running query: $f"
             aws athena start-query-execution \
               --query-string "$(cat $f)" \
-              --query-execution-context Database=bypass_db \
+              --query-execution-context Database=bypass_athena \
               --result-configuration OutputLocation="s3://$S3_CLIENT/query-results/"
           done
         env:
