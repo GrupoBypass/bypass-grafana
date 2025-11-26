@@ -84,7 +84,7 @@ jobs:
         run: |
           cd ansible
           echo "GRAFANA_BACKUP_BUCKET=${{ needs.provisioning.outputs.grafana_backup }}" > .env
-          echo "ATHENA_OUTPUT_LOCATION=${{ needs.provisioning.outputs.athena_results_bucket }}" >> .env
+          echo "ATHENA_OUTPUT_LOCATION=${{ needs.provisioning.outputs.athena_results }}" >> .env
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_SESSION_TOKEN=${{ secrets.AWS_SESSION_TOKEN }}" >> .env
