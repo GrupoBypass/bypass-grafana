@@ -104,6 +104,12 @@ jobs:
         env:
           S3_CLIENT: ${{ needs.provisioning.outputs.S3_CLIENT }}
 
+      - name: Configurar EC2 com Ansible
+        run: |
+          cd ansible
+          export ANSIBLE_HOST_KEY_CHECKING=False
+          ansible-playbook -i inventory.ini setup.yml
+
       - name: Run Athena queries
         run: |
           for f in athena/processed_queries/*.sql; do
@@ -118,9 +124,3 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
           S3_CLIENT: ${{ needs.provisioning.outputs.S3_CLIENT }}
-
-      - name: Configurar EC2 com Ansible
-        run: |
-          cd ansible
-          export ANSIBLE_HOST_KEY_CHECKING=False
-          ansible-playbook -i inventory.ini setup.yml
