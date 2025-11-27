@@ -26,6 +26,14 @@ resource "aws_security_group" "grafana_sg" {
   description = "Permite acesso HTTP e SSH ao Grafana"
 
   ingress {
+    description = "HTTP Grafana (port 80)"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     description = "HTTP Grafana"
     from_port   = 3000
     to_port     = 3000
